@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvManager } from './common/utils/EnvManager';
+import { User } from './entities/User';
+import { OnboardingController } from './controllers/Onboarding/onboarding.controller';
+import { UserService } from './services/User/user.service';
 
 @Module({
   imports: [
@@ -18,13 +21,17 @@ import { EnvManager } from './common/utils/EnvManager';
       password: EnvManager.getEnvOrThrow(process.env.POSTGRES_PASSWORD),
       database: EnvManager.getEnvOrThrow(process.env.POSTGRES_DB),
       entities: [
-        
+        User,
+
       ],
       autoLoadEntities: true,
       synchronize: true
     })
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [
+    AppController,
+    OnboardingController
+  ],
+  providers: [AppService, UserService],
 })
 export class AppModule {}
