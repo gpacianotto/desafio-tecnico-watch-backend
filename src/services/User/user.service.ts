@@ -14,7 +14,21 @@ export class UserService {
     this.respository = dataSource.getRepository(User);
   }
 
-  // Example method to create a new user
+  async findUserByEmail(email: string): Promise<User | null> {
+    try {
+      this.logger.log("Finding user by email", email);
+      const user = await this.respository.findOne({
+        where: { email },
+      });
+      return user;
+    }
+    catch (error) {
+      this.logger.error("Error finding user by email", error);
+      throw error;
+    }
+  }
+
+
   async createUser(userData: OnboardingControllerDto) {
     try {
       this.logger.log("Creating user", userData);

@@ -7,6 +7,7 @@ import { EnvManager } from './common/utils/EnvManager';
 import { User } from './entities/User';
 import { OnboardingController } from './controllers/Onboarding/onboarding.controller';
 import { UserService } from './services/User/user.service';
+import { AuthController } from './controllers/Auth/auth.controller';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { UserService } from './services/User/user.service';
   ],
   controllers: [
     AppController,
-    OnboardingController
+    OnboardingController,
+    AuthController
   ],
   providers: [AppService, UserService],
 })

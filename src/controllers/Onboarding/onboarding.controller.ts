@@ -15,6 +15,11 @@ export class OnboardingController {
     
   }
 
+  private deletePassword(data: any): any {
+    delete data.password;
+    return data;
+  }
+
   @Post()
   async onboarding(@Body() data: OnboardingControllerDto) {
     try {
@@ -26,7 +31,7 @@ export class OnboardingController {
 
       return {  
         message: "Onboarding completed successfully",
-        data: {...userCreated, password: "*********"},
+        data: this.deletePassword(userCreated),
       };
     }
     catch (error) {
