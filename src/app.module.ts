@@ -8,6 +8,9 @@ import { User } from './entities/User';
 import { OnboardingController } from './controllers/Onboarding/onboarding.controller';
 import { UserService } from './services/User/user.service';
 import { AuthController } from './controllers/Auth/auth.controller';
+import { Movie } from './entities/Movie';
+import { MoviesController } from './controllers/Movies/movies.controller';
+import { MovieService } from './services/Movies/movies.service';
 
 @Module({
   imports: [
@@ -23,7 +26,7 @@ import { AuthController } from './controllers/Auth/auth.controller';
       database: EnvManager.getEnvOrThrow(process.env.POSTGRES_DB),
       entities: [
         User,
-
+        Movie
       ],
       autoLoadEntities: true,
       synchronize: true
@@ -32,8 +35,9 @@ import { AuthController } from './controllers/Auth/auth.controller';
   controllers: [
     AppController,
     OnboardingController,
-    AuthController
+    AuthController,
+    MoviesController,
   ],
-  providers: [AppService, UserService],
+  providers: [AppService, UserService, MovieService],
 })
 export class AppModule {}
