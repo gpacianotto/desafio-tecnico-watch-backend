@@ -1,4 +1,4 @@
-import { Body, Controller, Headers, HttpException, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Headers, HttpException, Post, Query, UseGuards } from "@nestjs/common";
 import { MoviesControllerDto } from "./movies.controller.dto";
 import { GeneralLogger } from "src/common/utils/Logger";
 import { MovieService } from "src/services/Movies/movies.service";
@@ -38,6 +38,29 @@ export class MoviesController {
     }
     catch (error) {
       this.logger.error("Error creating movie", error);
+      throw error;
+    }
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  async getMovies(@Headers("authorization") authorization:string, @Query("page") page:string) {
+    try {
+      this.logger.log("Get movies request received", {page});
+
+      const authHeader = authorization.split(" ")[1];
+
+      const headerDecoded = verify(authHeader, EnvManager.getEnvOrThrow(process.env.JWT_SECRET)) as JwtPayload;
+
+      const movies = await this.movieService.getMovies(headerDecoded.id, parseInt(page));
+
+      return {
+        message: "Movies retrieved successfully",
+        data: movies
+      };
+    }
+    catch (error) {
+      this.logger.error("Error retrieving movies", error);
       throw error;
     }
   }

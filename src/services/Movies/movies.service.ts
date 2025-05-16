@@ -32,4 +32,21 @@ export class MovieService {
       throw err;
     }
   }
+
+  async getMovies(userId: string, page: number) {
+    try {
+      const movies = await this.repository.find({
+        where: { userId },
+        skip: (page - 1) * 10,
+        take: 10
+      })
+
+      return movies;
+    }
+    catch(err) {
+      this.logger.error("Erro ao tentar buscar filmes", err)
+
+      throw err;
+    }
+  }
 }
