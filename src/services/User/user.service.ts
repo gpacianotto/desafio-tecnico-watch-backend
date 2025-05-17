@@ -28,6 +28,17 @@ export class UserService {
     }
   }
 
+  findUserById(id: string): Promise<User | null> {
+    try {
+      return this.respository.findOne({
+        where: { id },
+      });
+    }
+    catch (error) {
+      this.logger.error("Error finding user by ID", error);
+      throw error;
+    }
+  }
 
   async createUser(userData: OnboardingControllerDto) {
     try {

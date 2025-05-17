@@ -26,7 +26,13 @@ export class Movie {
 
   @Column({ nullable: false })
   userId: string;
-  
+
+  @Column({ nullable: false, default: ""})
+  imageUrl: string;
+
+  @Column({ nullable: false, default: "N/A" })
+  imdbId: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

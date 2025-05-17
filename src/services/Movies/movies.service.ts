@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { GeneralLogger } from "src/common/utils/Logger";
 import { MoviesControllerDto } from "src/controllers/Movies/movies.controller.dto";
 import { Movie } from "src/entities/Movie";
@@ -21,7 +21,9 @@ export class MovieService {
         sinopse: data.sinopse,
         userRating: data.userRating,
         userConsiderations: data.userConsiderations,
-        userId
+        userId,
+        imageUrl: data.imageUrl,
+        imdbId: data.imdbId
       })
 
       return newMovie;
@@ -49,4 +51,49 @@ export class MovieService {
       throw err;
     }
   }
+
+  async getMovieById(movieId: string, userId: string) {
+    try {
+      const movie = await this.repository.findOne({
+        where: {imdbId: movieId, userId}
+      });
+
+      if(!movie) {
+        this.logger.error("Filme não encontrado", {movieId, userId})
+
+        return false;
+      }
+
+      return movie;
+    }
+    catch(err) {
+      this.logger.error("Erro ao tentar buscar filme", err)
+
+      throw err;
+    }
+  }
+
+  async deleteMovie(movieId: string, userId: string) {
+    try {
+      const movie = await this.repository.findOne({
+        where: {imdbId: movieId, userId}
+      });
+
+      if(!movie) {
+        this.logger.error("Filme não encontrado", {movieId, userId})
+
+        throw new HttpException("Filme não encontrado", 404);
+      }
+
+      await this.repository.delete(movie.id);
+      this.logger.log("Filme deletado com sucesso", {movieId, userId})
+      return true;
+    }
+    catch(err) {
+      this.logger.error("Erro ao tentar deletar filme", err)
+
+      throw err;
+    }
+  }
+
 }

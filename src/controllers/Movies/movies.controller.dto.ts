@@ -18,4 +18,10 @@ export class MoviesControllerDto {
   
   @IsNotEmpty({ message: "userConsiderations is required" })
   userConsiderations: string;
+
+  @IsNotEmpty({ message: "imageUrl is required" })
+  imageUrl: string;
+
+  @IsNotEmpty({ message: "imdbId is required" })
+  imdbId: string;
 }
