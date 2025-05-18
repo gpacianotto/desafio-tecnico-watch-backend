@@ -52,6 +52,21 @@ export class MovieService {
     }
   }
 
+  async countMovies(userId: string) {
+    try {
+      const count = await this.repository.count({
+        where: { userId }
+      })
+
+      return count;
+    }
+    catch(err) {
+      this.logger.error("Erro ao tentar contar filmes", err)
+
+      throw err;
+    }
+  }
+
   async getMovieById(movieId: string, userId: string) {
     try {
       const movie = await this.repository.findOne({

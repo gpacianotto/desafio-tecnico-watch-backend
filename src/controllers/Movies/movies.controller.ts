@@ -54,15 +54,17 @@ export class MoviesController {
     try {
       this.logger.log("Get movies request received", {page});
 
-      const authHeader = authorization.split(" ")[1];
-
-      const headerDecoded = verify(authHeader, EnvManager.getEnvOrThrow(process.env.JWT_SECRET)) as JwtPayload;
+      const headerDecoded = JWTDataExtracter.extractUserIdFromToken(authorization);
 
       const movies = await this.movieService.getMovies(headerDecoded.id, parseInt(page));
 
+      const count = await this.movieService.countMovies(headerDecoded.id);
+
       return {
         message: "Movies retrieved successfully",
-        data: movies
+        data: movies,
+        count,
+        page: parseInt(page),
       };
     }
     catch (error) {
