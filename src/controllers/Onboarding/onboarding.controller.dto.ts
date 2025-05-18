@@ -17,7 +17,7 @@ export class OnboardingControllerDto {
     minUppercase: 1,
     minNumbers: 1,
     minSymbols: 1,
-  })
+  }, {message: "password must have at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number, and 1 symbol"})
   @IsNotEmpty({ message: "password is required" })
   password: string;
 }
